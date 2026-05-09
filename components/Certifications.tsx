@@ -1,111 +1,324 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "./SectionHeading";
-import { Award, ChevronDown, ChevronUp } from "lucide-react";
+import { Award, ChevronDown, ChevronUp, X } from "lucide-react";
 
-const certifications = [
+type Certification = {
+  name: string;
+  issuer: string;
+  description: string;
+  credentialFile?: string;
+  /** Skills and topics covered — shown in the modal (right column) */
+  skillsLearned: string[];
+};
+
+function credentialHref(filename: string) {
+  return `/certificates/${encodeURIComponent(filename)}`;
+}
+
+function isImageFile(name: string) {
+  return /\.(png|jpe?g|webp|gif)$/i.test(name);
+}
+
+/** Static PNG (first page) for each PDF — generated via `npm run export:pdf-previews` */
+function pdfPreviewHref(pdfFilename: string) {
+  const pngName = pdfFilename.replace(/\.pdf$/i, ".png");
+  return `/certificates/previews/${encodeURIComponent(pngName)}`;
+}
+
+const certifications: Certification[] = [
   {
     name: "Samsung Innovation Campus",
     issuer: "Samsung Gulf",
     description:
       "Comprehensive foundations in mathematics and statistics for ML and data science. Core concepts in supervised, unsupervised, and reinforcement learning. Deep learning architectures and generative AI fundamentals.",
+    credentialFile: "samsung innovation campus.pdf",
+    skillsLearned: [
+      "Probability & statistics for ML",
+      "Supervised, unsupervised & reinforcement learning",
+      "Deep learning fundamentals",
+      "Generative AI concepts",
+      "Data preprocessing & evaluation",
+      "Model intuition and architecture choices",
+    ],
   },
   {
     name: "An Intuitive Introduction to Probability",
     issuer: "University of Zurich | Coursera",
     description:
       "Fundamental principles of probability theory, including conditional probability, random variables, expected values, variances, and normal distributions.",
+    credentialFile: "An Intuative Introdution to Probability.pdf",
+    skillsLearned: [
+      "Conditional probability & Bayes thinking",
+      "Random variables & distributions",
+      "Expectation, variance & covariance",
+      "Normal (Gaussian) models",
+      "Applying probability to real data problems",
+    ],
   },
   {
     name: "Mathematics for Machine Learning: Linear Algebra",
     issuer: "Imperial College London | Coursera",
     description:
       "Core concepts of linear algebra, including vectors, matrices, eigenvalues, and eigenvectors, applied using Python and NumPy.",
+    credentialFile: "Mathematics for Machine Learning- Linear Algebra.pdf",
+    skillsLearned: [
+      "Vectors, matrices & tensor thinking",
+      "Eigenvalues & eigenvectors",
+      "Orthogonality & projections",
+      "Implementing LA in Python / NumPy",
+      "Linking linear algebra to ML algorithms",
+    ],
+  },
+  {
+    name: "Mathematics for Machine Learning and Data Science",
+    issuer: "Imperial College London | Coursera",
+    description:
+      "Foundations in algebra and calculus for machine learning and data science, including vectors, matrices, derivatives, and optimization.",
+    credentialFile: "Mathematics for Machine Learning and Data Science.png",
+    skillsLearned: [
+      "Multivariate calculus for ML",
+      "Gradients & optimization basics",
+      "Linear systems & matrix methods",
+      "Bridging math to data science workflows",
+      "Numerical intuition for models",
+    ],
   },
   {
     name: "IBM Data Engineering Certificate",
     issuer: "IBM | Coursera",
     description:
       "11 courses on Databases, SQL, NoSQL, Python, Linux, Big Data and Machine Learning.",
+    credentialFile: "IBM Data Engineering.pdf",
+    skillsLearned: [
+      "SQL & relational databases",
+      "NoSQL & document stores",
+      "Python for data pipelines",
+      "Linux & shell for engineering",
+      "Big data tooling & concepts",
+      "ETL / ELT patterns",
+      "ML integration in data stacks",
+    ],
   },
   {
-    name: "Applied Data Science with Python",
-    issuer: "University of Michigan | Coursera",
+    name: "Deep Learning Specialization",
+    issuer: "DeepLearning.AI | Coursera",
     description:
-      "5-course specialization in Python, data visualization, machine learning, and text mining.",
+      "Neural networks, deep learning architectures, sequence models, and practical deep learning projects.",
+    credentialFile: "Deep Learning Specialization.png",
+    skillsLearned: [
+      "Neural nets, activation & optimization",
+      "CNNs for vision",
+      "Sequence models & RNN/Transformer basics",
+      "Structuring DL projects",
+      "Hyperparameters & debugging deep models",
+    ],
   },
   {
     name: "Machine Learning Specialization",
     issuer: "University of Washington | Coursera",
     description:
-      "Comprehensive 4-course program covering ML foundations, regression, classification, and clustering.",
-  },
-  {
-    name: "Advanced Machine Learning Specialization",
-    issuer: "HSE University | Coursera",
-    description:
-      "7-course specialization by Kaggle Grandmasters covering Bayesian methods, deep learning, and reinforcement learning.",
-  },
-  {
-    name: "IBM AI Engineering Professional Certificate",
-    issuer: "IBM | Coursera",
-    description:
-      "6 courses on deep learning with PyTorch, Keras, TensorFlow, computer vision, and NLP.",
-  },
-  {
-    name: "IBM Machine Learning Professional Certificate",
-    issuer: "IBM | Coursera",
-    description:
-      "6-course certificate covering supervised/unsupervised learning, deep learning, and time series analysis.",
-  },
-  {
-    name: "IBM Applied AI Professional Certificate",
-    issuer: "IBM | Coursera",
-    description:
-      "Practical AI implementations including Watson AI services and chatbot development.",
-  },
-  {
-    name: "IBM Generative AI Engineering Professional Certificate",
-    issuer: "IBM | Coursera",
-    description:
-      "Specialized in LLMs, prompt engineering, and generative AI applications.",
+      "ML foundations, regression, classification, clustering, and practical applications.",
+    credentialFile: "Machine Learning Specialization.png",
+    skillsLearned: [
+      "Regression & regularization",
+      "Classification metrics & models",
+      "Clustering & similarity",
+      "Recommender systems intuition",
+      "ML foundations & practical application",
+    ],
   },
   {
     name: "Google AI Essentials",
     issuer: "Google | Coursera",
     description:
       "Fundamentals of artificial intelligence, including AI tools, effective prompts, and responsible AI application.",
+    credentialFile: "Google AI Essentials.pdf",
+    skillsLearned: [
+      "Responsible AI & limitations",
+      "Prompt design for productivity",
+      "Choosing the right AI tools",
+      "Bias, safety & transparency awareness",
+      "Staying current with AI trends",
+    ],
   },
   {
-    name: "AI Developer Professional Certificate",
-    issuer: "IBM",
+    name: "Google Prompting Essentials",
+    issuer: "Google | Coursera",
     description:
-      "Professional certification for AI development practices and methodologies.",
-  },
-  {
-    name: "Mistral AI Development with LangChain & Ollama",
-    issuer: "Udemy",
-    description:
-      "Specialized course on Mistral AI model development with LangChain and Ollama frameworks.",
-  },
-  {
-    name: "Data Science Professional Certificate",
-    issuer: "IBM",
-    description:
-      "Comprehensive data science certification covering the full data science methodology.",
+      "Crafting effective prompts and using generative AI tools productively and responsibly.",
+    credentialFile: "Google prompting essentials.pdf",
+    skillsLearned: [
+      "Clear, specific prompting patterns",
+      "Iterative refinement of outputs",
+      "Grounding models with context",
+      "Productivity workflows with gen-AI",
+      "Quality & safety in generated content",
+    ],
   },
   {
     name: "Agile Project Management",
     issuer: "Google",
     description:
       "Project management certification focused on Agile methodologies and best practices.",
+    credentialFile: "Agile Project Management.pdf",
+    skillsLearned: [
+      "Agile principles & Scrum basics",
+      "Sprints, backlogs & prioritization",
+      "Stakeholder communication",
+      "Risk & change in iterative delivery",
+      "Team coordination & retrospectives",
+    ],
+  },
+  {
+    name: "Applying Project Management in Real Life",
+    issuer: "Google | Coursera",
+    description:
+      "Applying project management concepts, tools, and communication in real workplace scenarios.",
+    credentialFile: "Google Applying Project Management in Real Life.pdf",
+    skillsLearned: [
+      "Translating PM theory to day-to-day work",
+      "Tooling for schedules & dependencies",
+      "Cross-functional alignment",
+      "Status reporting & escalation",
+      "Real-world trade-offs & delivery",
+    ],
   },
 ];
 
+/** Compact preview in grid card — border hugs the credential (no full-width empty frame) */
+function CredentialThumb({ cert }: { cert: Certification }) {
+  if (!cert.credentialFile) {
+    return (
+      <div className="flex w-full justify-center">
+        <div className="inline-flex items-center justify-center rounded-lg border border-slate-600/40 bg-slate-900/40 p-4">
+          <Award className="h-10 w-10 text-slate-600" aria-hidden />
+        </div>
+      </div>
+    );
+  }
+
+  const href = credentialHref(cert.credentialFile);
+
+  if (isImageFile(cert.credentialFile)) {
+    return (
+      <div className="flex w-full justify-center">
+        <div className="inline-block max-w-full rounded-lg border border-slate-600/40 bg-slate-900/40 p-1.5 shadow-sm">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={href}
+            alt=""
+            className="block max-h-40 w-auto max-w-full object-contain"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  const previewSrc = pdfPreviewHref(cert.credentialFile);
+
+  return (
+    <div className="flex w-full justify-center">
+      <div className="inline-block max-w-full overflow-hidden rounded-lg border border-slate-600/40 bg-slate-900/40 p-1.5 shadow-sm">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={previewSrc}
+          alt=""
+          className="block max-h-40 w-auto max-w-full object-contain"
+        />
+      </div>
+    </div>
+  );
+}
+
+/** Left column: full credential scaled to fit viewport height — no scrolling */
+function CredentialModalPreview({ cert }: { cert: Certification }) {
+  if (!cert.credentialFile) {
+    return (
+      <div className="flex w-full justify-center">
+        <div className="inline-flex min-h-[160px] min-w-[160px] items-center justify-center rounded-xl border border-dashed border-slate-600/60 bg-slate-950/40 p-6">
+          <Award className="h-16 w-16 text-slate-600" aria-hidden />
+        </div>
+      </div>
+    );
+  }
+
+  if (isImageFile(cert.credentialFile)) {
+    const href = credentialHref(cert.credentialFile);
+    return (
+      <div className="flex w-full justify-center">
+        <div className="inline-block max-w-[min(100%,42rem)] rounded-xl border border-slate-600/50 bg-slate-950/50 p-2 shadow-sm">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={href}
+            alt={`${cert.name} credential`}
+            className="block max-h-[min(68vh,640px)] w-auto max-w-full object-contain"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  const previewSrc = pdfPreviewHref(cert.credentialFile);
+
+  return (
+    <div className="flex w-full justify-center">
+      <div className="inline-block max-w-[min(100%,42rem)] overflow-hidden rounded-xl border border-slate-600/50 bg-slate-950/50 p-2 shadow-sm">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={previewSrc}
+          alt={`${cert.name} credential`}
+          className="block max-h-[min(68vh,640px)] w-auto max-w-full object-contain"
+        />
+      </div>
+    </div>
+  );
+}
+
+function SkillsLearnedPanel({ skills }: { skills: string[] }) {
+  return (
+    <div className="flex h-full min-h-[220px] flex-col rounded-xl border border-slate-600/40 bg-slate-800/40 p-6 lg:border-l lg:border-t-0 lg:border-slate-700 lg:pl-9">
+      <h3 className="text-center text-base font-bold uppercase tracking-wide text-blue-400 lg:text-left">
+        Skills
+      </h3>
+      <div className="mt-5 grid grid-cols-2 gap-3">
+        {skills.map((skill) => (
+          <div
+            key={skill}
+            className="rounded-xl border border-slate-600/50 bg-slate-900/60 px-3.5 py-3.5 text-center shadow-sm"
+          >
+            <p className="text-xs leading-relaxed text-slate-300 sm:text-sm">
+              {skill}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Certifications() {
   const [showAll, setShowAll] = useState(false);
+  const [selectedCert, setSelectedCert] = useState<Certification | null>(null);
+
+  const closeModal = useCallback(() => setSelectedCert(null), []);
+
+  useEffect(() => {
+    if (!selectedCert) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [selectedCert, closeModal]);
+
   const visibleCerts = showAll ? certifications : certifications.slice(0, 8);
 
   return (
@@ -124,24 +337,30 @@ export default function Certifications() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.3, delay: (i % 4) * 0.05 }}
-              className="group p-5 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:border-blue-500/30 hover:bg-slate-800/60 transition-all duration-300"
             >
-              <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400 flex-shrink-0 mt-0.5">
-                  <Award size={18} />
+              <button
+                type="button"
+                onClick={() => setSelectedCert(cert)}
+                className="group w-full cursor-pointer rounded-xl border border-slate-700/50 bg-slate-800/30 p-5 text-center transition-all duration-300 hover:border-blue-500/40 hover:bg-slate-800/60 hover:shadow-lg hover:shadow-blue-900/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
+              >
+                <CredentialThumb cert={cert} />
+                <div className="mt-4 flex flex-col items-center gap-3">
+                  <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400">
+                    <Award size={18} aria-hidden />
+                  </div>
+                  <div className="w-full min-w-0 px-0.5">
+                    <h3 className="text-white font-semibold text-sm group-hover:text-blue-400 transition-colors">
+                      {cert.name}
+                    </h3>
+                    <p className="text-blue-400/70 text-xs mt-0.5">
+                      {cert.issuer}
+                    </p>
+                    <p className="text-slate-500 text-[11px] mt-2">
+                      Tap for credential & skills
+                    </p>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <h3 className="text-white font-semibold text-sm group-hover:text-blue-400 transition-colors">
-                    {cert.name}
-                  </h3>
-                  <p className="text-blue-400/70 text-xs mt-0.5">
-                    {cert.issuer}
-                  </p>
-                  <p className="text-slate-400 text-xs mt-2 leading-relaxed">
-                    {cert.description}
-                  </p>
-                </div>
-              </div>
+              </button>
             </motion.div>
           ))}
         </div>
@@ -154,6 +373,7 @@ export default function Certifications() {
             className="text-center mt-8"
           >
             <button
+              type="button"
               onClick={() => setShowAll(!showAll)}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-blue-500/50 text-blue-400 hover:bg-blue-500/10 transition-all duration-300 text-sm font-medium cursor-pointer"
             >
@@ -165,6 +385,71 @@ export default function Certifications() {
           </motion.div>
         )}
       </div>
+
+      <AnimatePresence>
+        {selectedCert ? (
+          <motion.div
+            key="cert-modal"
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <button
+              type="button"
+              aria-label="Close"
+              className="absolute inset-0 bg-slate-950/65 backdrop-blur-md"
+              onClick={closeModal}
+            />
+
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="cert-modal-title"
+              initial={{ opacity: 0, scale: 0.94, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 8 }}
+              transition={{ type: "spring", stiffness: 380, damping: 32 }}
+              className="relative z-[201] w-[min(96vw,88rem)] max-w-none max-h-[92vh] overflow-y-auto rounded-2xl border border-slate-600/50 bg-slate-900/95 p-6 pt-14 shadow-2xl shadow-black/40"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                aria-label="Close"
+                onClick={closeModal}
+                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-slate-600/60 bg-slate-800/90 text-slate-300 transition-colors hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-300"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="mx-auto max-w-3xl px-2 pr-10 text-center">
+                <h2
+                  id="cert-modal-title"
+                  className="text-lg font-bold text-white sm:text-xl"
+                >
+                  {selectedCert.name}
+                </h2>
+                <p className="mt-1 text-sm text-blue-400/80">
+                  {selectedCert.issuer}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                  {selectedCert.description}
+                </p>
+              </div>
+
+              <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10 lg:items-start">
+                <div className="min-w-0">
+                  <CredentialModalPreview cert={selectedCert} />
+                </div>
+                <div className="min-w-0">
+                  <SkillsLearnedPanel skills={selectedCert.skillsLearned} />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </section>
   );
 }

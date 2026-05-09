@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "export:pdf-previews": "python scripts/export_pdf_previews.py",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
