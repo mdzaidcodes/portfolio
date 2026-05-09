@@ -104,7 +104,7 @@ const certifications: Certification[] = [
   },
   {
     name: "Deep Learning Specialization",
-    issuer: "DeepLearning.AI | Coursera",
+    issuer: "DeepLearning.AI",
     description:
       "Neural networks, deep learning architectures, sequence models, and practical deep learning projects.",
     credentialFile: "Deep Learning Specialization.png",
@@ -118,7 +118,7 @@ const certifications: Certification[] = [
   },
   {
     name: "Machine Learning Specialization",
-    issuer: "University of Washington | Coursera",
+    issuer: "DeepLearning.AI",
     description:
       "ML foundations, regression, classification, clustering, and practical applications.",
     credentialFile: "Machine Learning Specialization.png",

@@ -10,12 +10,15 @@ const education = [
     school: "University of Bolton",
     location: "Ras Al Khaimah, UAE",
     year: "2024",
+    /** Short factual note — kept low-key on purpose */
+    note: "Awarded first-class honours.",
   },
   {
     degree: "High School Diploma",
     school: "The Indian High School",
     location: "Dubai, UAE",
     year: "2021",
+    note: "CBSE Grade 12: 95%.",
   },
 ];
 
@@ -44,6 +47,9 @@ export default function Education() {
               <p className="text-blue-400 font-medium mb-1">{edu.school}</p>
               <p className="text-slate-400 text-sm">
                 {edu.location} &middot; {edu.year}
+              </p>
+              <p className="mt-3 text-sm font-semibold text-slate-500 leading-relaxed">
+                {edu.note}
               </p>
             </motion.div>
           ))}
