@@ -74,7 +74,7 @@ const certifications: Certification[] = [
   },
   {
     name: "Mathematics for Machine Learning and Data Science",
-    issuer: "Imperial College London | Coursera",
+    issuer: "DeepLearning.AI",
     description:
       "Foundations in algebra and calculus for machine learning and data science, including vectors, matrices, derivatives, and optimization.",
     credentialFile: "Mathematics for Machine Learning and Data Science.png",
@@ -131,6 +131,45 @@ const certifications: Certification[] = [
     ],
   },
   {
+    name: "PyTorch for Deep Learning",
+    issuer: "DeepLearning.AI",
+    description:
+      "Professional certificate covering PyTorch fundamentals, ecosystem tools and techniques, and advanced architectures through to deployment.",
+    credentialFile: "PyTorch for Deep Learning.png",
+    skillsLearned: [
+      "PyTorch fundamentals & core APIs",
+      "Training workflows, autograd & modules",
+      "Ecosystem tools & production-minded patterns",
+      "Advanced architectures & deployment",
+    ],
+  },
+  {
+    name: "Natural Language Processing Specialization",
+    issuer: "DeepLearning.AI",
+    description:
+      "Four-course specialization spanning classification and vector spaces, probabilistic models, sequence models, and attention-based NLP.",
+    credentialFile: "Natural Language Processing Specialization.png",
+    skillsLearned: [
+      "Classification & vector-space NLP",
+      "Probabilistic language models",
+      "Sequence models for text",
+      "Attention mechanisms & modern NLP",
+    ],
+  },
+  {
+    name: "TensorFlow Developer Professional Certificate",
+    issuer: "DeepLearning.AI",
+    description:
+      "Professional certificate on building and deploying models with TensorFlow, from fundamentals through CNNs, NLP, and time-series prediction.",
+    credentialFile: "TensorFlow Developer Professional Certificate.png",
+    skillsLearned: [
+      "TensorFlow fundamentals for ML & DL",
+      "Convolutional models in TensorFlow",
+      "NLP pipelines in TensorFlow",
+      "Sequences, time series & forecasting",
+    ],
+  },
+  {
     name: "Google AI Essentials",
     issuer: "Google | Coursera",
     description:
@@ -160,7 +199,7 @@ const certifications: Certification[] = [
   },
   {
     name: "Agile Project Management",
-    issuer: "Google",
+    issuer: "Google | Coursera",
     description:
       "Project management certification focused on Agile methodologies and best practices.",
     credentialFile: "Agile Project Management.pdf",
