@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "export:pdf-previews": "python scripts/export_pdf_previews.py",
+    "gen:favicon": "python scripts/generate_favicon.py",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

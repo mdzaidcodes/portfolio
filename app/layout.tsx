@@ -12,14 +12,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const metadataBase =
+  typeof process.env.VERCEL_URL === "string"
+    ? new URL(`https://${process.env.VERCEL_URL}`)
+    : new URL("http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase,
   title: "Muhammad Zaid | AI Engineer",
   description:
     "AI Engineer specializing in Deep Learning, Generative AI and LLM-powered applications. Building scalable ML systems and AI-powered products.",
-  icons: {
-    icon: [{ url: "/icon", type: "image/png" }],
-    apple: [{ url: "/icon", type: "image/png" }],
-  },
   keywords: [
     "AI Engineer",
     "Deep Learning",
