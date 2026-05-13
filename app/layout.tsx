@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   title: "Muhammad Zaid | AI Engineer",
   description:
     "AI Engineer specializing in Deep Learning, Generative AI and LLM-powered applications. Building scalable ML systems and AI-powered products.",
+  icons: {
+    icon: [{ url: "/icon", type: "image/png" }],
+    apple: [{ url: "/icon", type: "image/png" }],
+  },
   keywords: [
     "AI Engineer",
     "Deep Learning",

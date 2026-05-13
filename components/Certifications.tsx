@@ -10,6 +10,8 @@ type Certification = {
   issuer: string;
   description: string;
   credentialFile?: string;
+  /** Completion / award month when known (shown under issuer) */
+  completed?: string;
   /** Skills and topics covered — shown in the modal (right column) */
   skillsLearned: string[];
 };
@@ -30,8 +32,123 @@ function pdfPreviewHref(pdfFilename: string) {
 
 const certifications: Certification[] = [
   {
+    name: "Agentic AI",
+    issuer: "DeepLearning.AI",
+    completed: "May 2026",
+    description:
+      "Course certificate on agentic AI: autonomous agents, tool use, planning, and building systems where models reason and act toward goals.",
+    credentialFile: "Agentic AI.png",
+    skillsLearned: [
+      "Agent architectures & orchestration",
+      "Tool use, planning & multi-step workflows",
+      "Designing reliable agentic systems",
+      "Evaluation & safety for agentic behavior",
+    ],
+  },
+  {
+    name: "GenAI for Software Development",
+    issuer: "DeepLearning.AI",
+    completed: "May 2026",
+    description:
+      "Professional certificate covering generative AI for software development, team engineering with AI, and AI-powered software and system design.",
+    credentialFile: "Generative AI for Software Development.png",
+    skillsLearned: [
+      "Introduction to generative AI for software development",
+      "Team software engineering with AI",
+      "AI-powered software & system design",
+    ],
+  },
+  {
+    name: "Natural Language Processing Specialization",
+    issuer: "DeepLearning.AI",
+    completed: "May 2026",
+    description:
+      "Four-course specialization spanning classification and vector spaces, probabilistic models, sequence models, and attention-based NLP.",
+    credentialFile: "Natural Language Processing Specialization.png",
+    skillsLearned: [
+      "Classification & vector-space NLP",
+      "Probabilistic language models",
+      "Sequence models for text",
+      "Attention mechanisms & modern NLP",
+    ],
+  },
+  {
+    name: "PyTorch for Deep Learning",
+    issuer: "DeepLearning.AI",
+    completed: "May 2026",
+    description:
+      "Professional certificate covering PyTorch fundamentals, ecosystem tools and techniques, and advanced architectures through to deployment.",
+    credentialFile: "PyTorch for Deep Learning.png",
+    skillsLearned: [
+      "PyTorch fundamentals & core APIs",
+      "Training workflows, autograd & modules",
+      "Ecosystem tools & production-minded patterns",
+      "Advanced architectures & deployment",
+    ],
+  },
+  {
+    name: "TensorFlow Developer Professional Certificate",
+    issuer: "DeepLearning.AI",
+    completed: "May 2026",
+    description:
+      "Professional certificate on building and deploying models with TensorFlow, from fundamentals through CNNs, NLP, and time-series prediction.",
+    credentialFile: "TensorFlow Developer Professional Certificate.png",
+    skillsLearned: [
+      "TensorFlow fundamentals for ML & DL",
+      "Convolutional models in TensorFlow",
+      "NLP pipelines in TensorFlow",
+      "Sequences, time series & forecasting",
+    ],
+  },
+  {
+    name: "Deep Learning Specialization",
+    issuer: "DeepLearning.AI",
+    completed: "May 2026",
+    description:
+      "Neural networks, deep learning architectures, sequence models, and practical deep learning projects.",
+    credentialFile: "Deep Learning Specialization.png",
+    skillsLearned: [
+      "Neural nets, activation & optimization",
+      "CNNs for vision",
+      "Sequence models & RNN/Transformer basics",
+      "Structuring DL projects",
+      "Hyperparameters & debugging deep models",
+    ],
+  },
+  {
+    name: "Machine Learning Specialization",
+    issuer: "DeepLearning.AI",
+    completed: "April 2026",
+    description:
+      "ML foundations, regression, classification, clustering, and practical applications.",
+    credentialFile: "Machine Learning Specialization.png",
+    skillsLearned: [
+      "Regression & regularization",
+      "Classification metrics & models",
+      "Clustering & similarity",
+      "Recommender systems intuition",
+      "ML foundations & practical application",
+    ],
+  },
+  {
+    name: "Mathematics for Machine Learning",
+    issuer: "DeepLearning.AI",
+    completed: "April 2026",
+    description:
+      "Foundations in algebra and calculus for machine learning and data science, including vectors, matrices, derivatives, and optimization.",
+    credentialFile: "Mathematics for Machine Learning and Data Science.png",
+    skillsLearned: [
+      "Multivariate calculus for ML",
+      "Gradients & optimization basics",
+      "Linear systems & matrix methods",
+      "Bridging math to data science workflows",
+      "Numerical intuition for models",
+    ],
+  },
+  {
     name: "Samsung Innovation Campus",
     issuer: "Samsung Gulf",
+    completed: "September 2024",
     description:
       "Comprehensive foundations in mathematics and statistics for ML and data science. Core concepts in supervised, unsupervised, and reinforcement learning. Deep learning architectures and generative AI fundamentals.",
     credentialFile: "samsung innovation campus.pdf",
@@ -42,6 +159,23 @@ const certifications: Certification[] = [
       "Generative AI concepts",
       "Data preprocessing & evaluation",
       "Model intuition and architecture choices",
+    ],
+  },
+  {
+    name: "Data Engineering Professional Certificate",
+    issuer: "IBM",
+    completed: "May 2024",
+    description:
+      "11 courses on Databases, SQL, NoSQL, Python, Linux, Big Data and Machine Learning.",
+    credentialFile: "IBM Data Engineering.pdf",
+    skillsLearned: [
+      "SQL & relational databases",
+      "NoSQL & document stores",
+      "Python for data pipelines",
+      "Linux & shell for engineering",
+      "Big data tooling & concepts",
+      "ETL / ELT patterns",
+      "ML integration in data stacks",
     ],
   },
   {
@@ -70,103 +204,6 @@ const certifications: Certification[] = [
       "Orthogonality & projections",
       "Implementing LA in Python / NumPy",
       "Linking linear algebra to ML algorithms",
-    ],
-  },
-  {
-    name: "Mathematics for Machine Learning and Data Science",
-    issuer: "DeepLearning.AI",
-    description:
-      "Foundations in algebra and calculus for machine learning and data science, including vectors, matrices, derivatives, and optimization.",
-    credentialFile: "Mathematics for Machine Learning and Data Science.png",
-    skillsLearned: [
-      "Multivariate calculus for ML",
-      "Gradients & optimization basics",
-      "Linear systems & matrix methods",
-      "Bridging math to data science workflows",
-      "Numerical intuition for models",
-    ],
-  },
-  {
-    name: "IBM Data Engineering Certificate",
-    issuer: "IBM | Coursera",
-    description:
-      "11 courses on Databases, SQL, NoSQL, Python, Linux, Big Data and Machine Learning.",
-    credentialFile: "IBM Data Engineering.pdf",
-    skillsLearned: [
-      "SQL & relational databases",
-      "NoSQL & document stores",
-      "Python for data pipelines",
-      "Linux & shell for engineering",
-      "Big data tooling & concepts",
-      "ETL / ELT patterns",
-      "ML integration in data stacks",
-    ],
-  },
-  {
-    name: "Deep Learning Specialization",
-    issuer: "DeepLearning.AI",
-    description:
-      "Neural networks, deep learning architectures, sequence models, and practical deep learning projects.",
-    credentialFile: "Deep Learning Specialization.png",
-    skillsLearned: [
-      "Neural nets, activation & optimization",
-      "CNNs for vision",
-      "Sequence models & RNN/Transformer basics",
-      "Structuring DL projects",
-      "Hyperparameters & debugging deep models",
-    ],
-  },
-  {
-    name: "Machine Learning Specialization",
-    issuer: "DeepLearning.AI",
-    description:
-      "ML foundations, regression, classification, clustering, and practical applications.",
-    credentialFile: "Machine Learning Specialization.png",
-    skillsLearned: [
-      "Regression & regularization",
-      "Classification metrics & models",
-      "Clustering & similarity",
-      "Recommender systems intuition",
-      "ML foundations & practical application",
-    ],
-  },
-  {
-    name: "PyTorch for Deep Learning",
-    issuer: "DeepLearning.AI",
-    description:
-      "Professional certificate covering PyTorch fundamentals, ecosystem tools and techniques, and advanced architectures through to deployment.",
-    credentialFile: "PyTorch for Deep Learning.png",
-    skillsLearned: [
-      "PyTorch fundamentals & core APIs",
-      "Training workflows, autograd & modules",
-      "Ecosystem tools & production-minded patterns",
-      "Advanced architectures & deployment",
-    ],
-  },
-  {
-    name: "Natural Language Processing Specialization",
-    issuer: "DeepLearning.AI",
-    description:
-      "Four-course specialization spanning classification and vector spaces, probabilistic models, sequence models, and attention-based NLP.",
-    credentialFile: "Natural Language Processing Specialization.png",
-    skillsLearned: [
-      "Classification & vector-space NLP",
-      "Probabilistic language models",
-      "Sequence models for text",
-      "Attention mechanisms & modern NLP",
-    ],
-  },
-  {
-    name: "TensorFlow Developer Professional Certificate",
-    issuer: "DeepLearning.AI",
-    description:
-      "Professional certificate on building and deploying models with TensorFlow, from fundamentals through CNNs, NLP, and time-series prediction.",
-    credentialFile: "TensorFlow Developer Professional Certificate.png",
-    skillsLearned: [
-      "TensorFlow fundamentals for ML & DL",
-      "Convolutional models in TensorFlow",
-      "NLP pipelines in TensorFlow",
-      "Sequences, time series & forecasting",
     ],
   },
   {
@@ -394,6 +431,11 @@ export default function Certifications() {
                     <p className="text-blue-400/70 text-xs mt-0.5">
                       {cert.issuer}
                     </p>
+                    {cert.completed ? (
+                      <p className="text-slate-500 text-[11px] mt-0.5">
+                        {cert.completed}
+                      </p>
+                    ) : null}
                     <p className="text-slate-500 text-[11px] mt-2">
                       Tap for credential & skills
                     </p>
@@ -472,6 +514,11 @@ export default function Certifications() {
                 <p className="mt-1 text-sm text-blue-400/80">
                   {selectedCert.issuer}
                 </p>
+                {selectedCert.completed ? (
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    {selectedCert.completed}
+                  </p>
+                ) : null}
                 <p className="mt-3 text-sm leading-relaxed text-slate-400">
                   {selectedCert.description}
                 </p>
