@@ -6,6 +6,11 @@ import { Trophy, Medal } from "lucide-react";
 
 const competitions = [
   {
+    name: "HACK4IMPACT 2",
+    highlight: true,
+    achievement: "Won",
+  },
+  {
     name: "Birmingham Bounty Challenge 2026",
     highlight: true,
     achievement: "Won",
