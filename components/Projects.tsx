@@ -5,7 +5,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 
-const projects = [
+const projects: {
+  name: string;
+  description: string;
+  tags: string[];
+  color: string;
+  github?: string;
+}[] = [
+  {
+    name: "Discover",
+    description:
+      "Turns a festival poster, a pasted lineup, a festival link, a list of artists or a mood into a Spotify playlist. It reads every act, matches each one to the right Spotify artist, picks their best songs and orders them into a set you can play in the app, reshape in plain words (\"more upbeat\", \"add Radiohead\") and save to Spotify in one tap. It also learns your taste from your top artists and remembers what you tell it, so each playlist fits you better than the last.",
+    tags: ["AI", "Spotify API", "Music", "Personalization"],
+    color: "from-cyan-500/20 to-blue-600/20",
+    github: "https://github.com/mdzaidcodes/discover",
+  },
+  {
+    name: "Wayfare",
+    description:
+      "An AI travel planner that does the work for you. Describe your trip in a sentence: where you'd like to go, when, who's coming and how much you want to spend. Wayfare searches real flights, hotels and activities, compares prices across booking sites, and keeps every choice within your budget. Then it turns your picks into a clear itinerary, timed hour by hour, from leaving for the airport to the last activity of the trip.",
+    tags: ["AI Agent", "Travel", "Planning", "Budgeting"],
+    color: "from-blue-500/20 to-cyan-600/20",
+    github: "https://github.com/mdzaidcodes/Wayfare",
+  },
   {
     name: "CodeDocs-AI",
     description:
@@ -28,32 +50,11 @@ const projects = [
     color: "from-cyan-500/20 to-blue-500/20",
   },
   {
-    name: "MailAssist",
-    description:
-      "AI-powered personal assistant that connects to Gmail to automatically organize emails, detect scams, extract meeting details, track tasks, and provide voice/text commands. Features a dashboard with tasks, calendar meetings, and AI email summaries with automatic task resolution.",
-    tags: ["Gmail API", "AI", "NLP", "Dashboard"],
-    color: "from-indigo-500/20 to-blue-500/20",
-  },
-  {
     name: "EduAI-Companion",
     description:
       "Teacher assistant platform that automatically grades essays and assignments while providing detailed feedback and generating personalized lesson plans. Tracks student progress through analytics and creates interactive quizzes aligned with curriculum standards.",
     tags: ["Next.js", "FastAPI", "Ollama", "Education"],
     color: "from-blue-500/20 to-indigo-600/20",
-  },
-  {
-    name: "StyleForge",
-    description:
-      "AI-powered male stylist application that transforms outfit selection into an engaging, personalized experience through intelligent recommendations and real-time styling conversations with AI-driven coordination suggestions.",
-    tags: ["AI", "Fashion", "Recommendations", "Chat"],
-    color: "from-cyan-600/20 to-blue-500/20",
-  },
-  {
-    name: "WanderGuide-AI",
-    description:
-      "AI travel planning agent that creates personalized itineraries based on user interests with real-time booking assistance and location-aware recommendations. Offers weather-based activity suggestions and budget optimization.",
-    tags: ["AI Agent", "Travel", "Real-time", "Planning"],
-    color: "from-blue-500/20 to-cyan-600/20",
   },
   {
     name: "ChefMate-AI",
@@ -126,10 +127,23 @@ export default function Projects() {
                         {project.name}
                       </h3>
                     </div>
-                    <ExternalLink
-                      size={18}
-                      className="text-slate-500 group-hover:text-blue-400 transition-colors flex-shrink-0 mt-1"
-                    />
+                    {project.github ? (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label={`${project.name} GitHub repository`}
+                        className="text-slate-500 hover:text-blue-400 group-hover:text-blue-400 transition-colors flex-shrink-0 mt-1"
+                      >
+                        <ExternalLink size={18} />
+                      </a>
+                    ) : (
+                      <ExternalLink
+                        size={18}
+                        className="text-slate-500 group-hover:text-blue-400 transition-colors flex-shrink-0 mt-1"
+                      />
+                    )}
                   </div>
 
                   <p
